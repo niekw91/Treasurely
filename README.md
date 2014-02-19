@@ -1,4 +1,4 @@
-Reedy
-=====
+TreasureBox
+===========
 
-Single Page Application RSS reader created in AngularJS
+Single page chat application created in NodeJS and AngularJS
