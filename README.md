@@ -1,4 +1,4 @@
-TreasureBox
-===========
+Treasurely-API
+==============
 
-Single page chat application created in NodeJS and AngularJS
+Treasurely API written in NodeJS
