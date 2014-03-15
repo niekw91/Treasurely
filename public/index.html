@@ -36,8 +36,9 @@
             <li><a href="#/mytreasures">My Treasure</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><span class="hidable">Hello Stranger&nbsp;</span><button type="button" class="btn btn-default navbar-btn log" style="margin-right:1.5em;"><a href="#/login">Login</a></button></li>  
-          </ul>
+            <li><span class="hidable"></span><button type="button" ng-hide="isAuthenticated()" class="btn btn-default navbar-btn log" style="margin-right:1.5em;"><a href="#/login">Login</a></button></li>
+            <li><span class="hidable"></span><button type="button" ng-show="isAuthenticated()" class="btn btn-default navbar-btn log" style="margin-right:1.5em;"><a href="#/logout">Logout</a></button></li>
+          </ul>  
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>

@@ -44,6 +44,15 @@ treasurelyControllers.controller('TreasureController', ['$scope', '$http',
 		*/
 }]);
 
+treasurelyControllers.controller('TreasureMyController', ['$scope', '$http', '$rootScope',
+  function($scope, $http, $rootScope) {
+  	//var userId = $rootScope.token;
+
+	$http.get('http://localhost:8000/treasures/531b0a25b0cdec8815815a54?callback=JSON_CALLBACK&_=' + (new Date().getTime())).success(function(data) {
+		$scope.treasures = data;
+	});
+}]);
+
 treasurelyControllers.controller('TreasureDropController', ['$scope', '$http', 'GeolocationService',
 	function($scope, $http, geolocation) {
 	    $scope.drop = function(treasure) {
@@ -66,10 +75,57 @@ treasurelyControllers.controller('TreasureDropController', ['$scope', '$http', '
 	    // $scope.reset();
 }]);
 
-treasurelyControllers.controller('MenuController', ['$scope',
-	function($scope) {
+treasurelyControllers.controller('JoinController', ['$scope', '$http',
+	function($scope, $http, $location, $rootScope) {
+	    $scope.join = function(newUser) {
+			$http.post('http://localhost:8000/signup', newUser).success(function(response) {
+    			console.log(response);
+
+    			$scope.response = response;
+    		});
+	    };
+}]);
+
+treasurelyControllers.controller('LoginController', ['$scope', '$http', '$location', '$rootScope',
+	function($scope, $http, $location, $rootScope) {
+	    $scope.login = function(user) {
+			$http.post('http://localhost:8000/login', user).success(function(response) {
+    			console.log(response);
+    			if (response.success) {
+    				$rootScope.token = response.token;
+    				// If success redirect to home page
+    				$location.path("/");
+    			} else {
+    				// If login incorrect show error message
+    				$scope.response = response;
+    			}
+    		});
+	    };
+}]);
+
+treasurelyControllers.controller('LogoutController', ['$scope', '$http', '$location', '$rootScope',
+	function($scope, $http, $location, $rootScope) {
+	    $scope.logout = function() {
+			$http.post('http://localhost:8000/logout').success(function(response) {
+    			console.log(response);
+    			if (response.success) {
+    				$rootScope.token = null;
+    				// If success redirect to home page
+    				$location.path("/");
+    			}
+    		});
+	    };
+}]);
+
+treasurelyControllers.controller('MenuController', ['$scope', '$rootScope',
+	function($scope, $rootScope) {
   		$scope.isCollapsed = true;
 
-  		$scope.routeTreasure = "/treasure/:treasureId";
-  		$scope.drop = "#/drop";
+	   	$scope.isAuthenticated = function() {
+	     	if(!$rootScope.token) {
+	     		return false;
+	     	} else {
+	     		return true;
+	     	}
+	   	}
 }]);

@@ -23,6 +23,8 @@ exports.getTreasureById = function(req, res) {
 
 // GET: /treasures/:id
 exports.getTreasuresByUser = function(req, res) {
+	console.log(req.user);
+
 	var userId = req.params.id;
 
 	Treasure.find({ user_id: userId }, function (err, treasures) {

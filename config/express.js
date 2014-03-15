@@ -2,7 +2,7 @@ var express = require('express')
   , mongoStore = require('connect-mongo')(express)
   , flash = require('connect-flash')
 
-module.exports = function (app, config) {
+module.exports = function (app, config, passport) {
   app.set('showStackError', true)
   app.use(express.compress({
     filter: function (req, res) {
@@ -42,6 +42,10 @@ module.exports = function (app, config) {
     // connect flash for flash messages
     app.use(flash())
     app.use(express.favicon())
+
+    // Configure passport
+    app.use(passport.initialize());
+    app.use(passport.session()); // persistent login sessions
 
     // routes should be at the last
     app.use(app.router)

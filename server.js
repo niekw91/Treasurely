@@ -20,11 +20,16 @@ fs.readdirSync(models_path).forEach(function (file) {
 })
 
 var app = express()
+
+// Load passport authentication strategies
+var passport = require('passport');
+require('./config/passport')(passport, mongoose);
+
 // Load express settings
-require('./config/express')(app, config)
+require('./config/express')(app, config, passport)
 
 // Bootstrap routes
-require('./config/routes')(app)
+require('./config/routes')(app, passport)
 
 // Get index.html
 app.get('/', function indexHTML(req, res, next) {

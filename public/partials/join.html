@@ -1,0 +1,27 @@
+
+
+
+	<div class="col-sm-6 col-sm-offset-3">
+
+		<h1><span class="fa fa-sign-in"></span>Signup</h1>
+
+		<div ng-if="response.message.length > 0">
+    		<div class="alert alert-danger">{{ response.message }}</div>
+		</div>
+
+		<form novalidate class="simple-form">
+			<div class="form-group">
+				<input type="text" class="form-control" ng-model="newUser.email" placeholder="Email">
+			</div>
+			<div class="form-group">
+				<input type="password" class="form-control" ng-model="newUser.password" placeholder="Password">
+			</div>
+
+			<button class="btn btn-warning btn-lg" ng-click="join(newUser)">Join</button>
+		</form>
+
+		<hr>
+
+		<p>Already have an account? <a href="#/login">Login</a></p>
+
+</div>

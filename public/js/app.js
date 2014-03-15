@@ -20,7 +20,7 @@ treasurely.config(['$routeProvider',
         controller: 'TreasureDropController'
       }).
       when('/mytreasures', {
-        templateUrl: 'partials/treasure-drop.html',
+        templateUrl: 'partials/mytreasures.html',
         controller: 'TreasureMyController'
       }).
       when('/join', {
@@ -30,6 +30,10 @@ treasurely.config(['$routeProvider',
       when('/login', {
         templateUrl: 'partials/login.html',
         controller: 'LoginController'
+      }).
+      when('/logout', {
+        templateUrl: 'partials/login.html',
+        controller: 'LogoutController'
       }).
       otherwise({
         redirectTo: '/'

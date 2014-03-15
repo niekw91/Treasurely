@@ -21,7 +21,9 @@
     "gzippo": "latest",
     "async": "latest",
     "socket.io": "~0.9.14",
-    "geolib": "latest"
+    "geolib": "latest",
+    "passport": "latest",
+    "passport-local": "latest"
   }
 }
 
