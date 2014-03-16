@@ -47,8 +47,15 @@ module.exports = function (app, config, passport) {
     app.use(passport.initialize());
     app.use(passport.session()); // persistent login sessions
 
+    var allowCrossDomain = function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type,      Accept");
+        next();
+    };
+    app.use(allowCrossDomain);
+
     // routes should be at the last
-    app.use(app.router)
+    app.use(app.router);
 
     app.use(function(err, req, res, next){
       // treat as 404
