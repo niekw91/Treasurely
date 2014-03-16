@@ -1,7 +1,8 @@
 var treasurely = angular.module('treasurely', [
   'ngRoute',
   'treasurelyControllers',
-  'ui.bootstrap'
+  'ui.bootstrap',
+  'ngCookies'
 ]);
 
 treasurely.config(['$routeProvider',

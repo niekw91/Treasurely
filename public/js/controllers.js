@@ -44,13 +44,16 @@ treasurelyControllers.controller('TreasureController', ['$scope', '$http',
 		*/
 }]);
 
-treasurelyControllers.controller('TreasureMyController', ['$scope', '$http', '$rootScope',
-  function($scope, $http, $rootScope) {
-  	//var userId = $rootScope.token;
-
-	$http.get('http://localhost:8000/treasures/531b0a25b0cdec8815815a54?callback=JSON_CALLBACK&_=' + (new Date().getTime())).success(function(data) {
-		$scope.treasures = data;
-	});
+treasurelyControllers.controller('TreasureMyController', ['$scope', '$http', '$cookieStore',
+  function($scope, $http, $cookieStore) {
+  	var userId = $cookieStore.get('logged-in');
+  	if (userId) {
+		$http.get('http://localhost:8000/treasures/' + userId + '?callback=JSON_CALLBACK&_=' + (new Date().getTime())).success(function(data) {
+			$scope.treasures = data;
+		});
+  	} else {
+  		// No user logged in
+  	}
 }]);
 
 treasurelyControllers.controller('TreasureDropController', ['$scope', '$http', 'GeolocationService',
@@ -84,15 +87,30 @@ treasurelyControllers.controller('JoinController', ['$scope', '$http',
     			$scope.response = response;
     		});
 	    };
+
+	  	$scope.myInterval = 5000;
+	  	var slides = $scope.slides = [];
+	  	$scope.addSlide = function() {
+	    	var newWidth = 600 + slides.length;
+	    	slides.push({
+		      	image: 'http://whdn.williamhill.com/cms/images/vegas/uploads/600x300_PharaohsWinner.jpg',
+		      	text: 'Treasurely'
+		    });
+
+	  	};
+	  	for (var i=0; i<4; i++) {
+	    	$scope.addSlide();
+	  	}
 }]);
 
-treasurelyControllers.controller('LoginController', ['$scope', '$http', '$location', '$rootScope',
-	function($scope, $http, $location, $rootScope) {
+treasurelyControllers.controller('LoginController', ['$scope', '$http', '$location', '$cookieStore',
+	function($scope, $http, $location, $cookieStore) {
 	    $scope.login = function(user) {
 			$http.post('http://localhost:8000/login', user).success(function(response) {
     			console.log(response);
     			if (response.success) {
-    				$rootScope.token = response.token;
+    				$cookieStore.put('logged-in', response.token);
+    				console.log($cookieStore.get('logged-in'));
     				// If success redirect to home page
     				$location.path("/");
     			} else {
@@ -103,28 +121,24 @@ treasurelyControllers.controller('LoginController', ['$scope', '$http', '$locati
 	    };
 }]);
 
-treasurelyControllers.controller('LogoutController', ['$scope', '$http', '$location', '$rootScope',
-	function($scope, $http, $location, $rootScope) {
-	    $scope.logout = function() {
-			$http.post('http://localhost:8000/logout').success(function(response) {
-    			console.log(response);
-    			if (response.success) {
-    				$rootScope.token = null;
-    				// If success redirect to home page
-    				$location.path("/");
-    			}
-    		});
-	    };
+treasurelyControllers.controller('LogoutController', ['$scope', '$http', '$location', '$cookieStore',
+	function($scope, $http, $location, $cookieStore) {
+		$http.get('http://localhost:8000/logout?callback=JSON_CALLBACK&_=' + (new Date().getTime())).success(function(response) {
+			console.log(response);
+			if (response.success) {
+				$cookieStore.remove('logged-in');
+			}
+		});
 }]);
 
-treasurelyControllers.controller('MenuController', ['$scope', '$rootScope',
-	function($scope, $rootScope) {
+treasurelyControllers.controller('MenuController', ['$scope', '$cookieStore', 
+	function($scope, $cookieStore) {
   		$scope.isCollapsed = true;
 
 	   	$scope.isAuthenticated = function() {
-	     	if(!$rootScope.token) {
-	     		return false;
-	     	} else {
+	   		if (!$cookieStore.get('logged-in')) {
+        		return false;
+    		} else {
 	     		return true;
 	     	}
 	   	}

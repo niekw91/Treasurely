@@ -15,17 +15,11 @@ module.exports = function (app, passport) {
     app.get('/users', users.getUsers);
     app.post('/user', users.postUser);
 
-    // app.post('/login', passport.authenticate('local-login', {
-    //     successRedirect : '/mytreasures', 
-    //     failureRedirect : '/',
-    //     failureFlash : true
-    // }));
-
     app.post('/login', function(req, res, next) {
         passport.authenticate('local-login', function(err, user, info) {
             if (err) { return next(err); }
             if (!user) {
-                return res.send({ success : false, message : 'Authentication failed', user: null });
+                return res.send({ success : false, message : 'Authentication failed', token: null });
             }
             return res.send({ success : true, message : 'Authentication succeeded', token: user.id });
       })(req, res, next);
