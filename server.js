@@ -11,7 +11,7 @@ var env = process.env.NODE_ENV || 'development'
 	, mongoose = require('mongoose')
 
 // Bootstrap db connection
-mongoose.connect(config.db)
+mongoose.connect(config.db);
 
 // Bootstrap models
 var models_path = __dirname + '/app/models'
@@ -19,7 +19,7 @@ fs.readdirSync(models_path).forEach(function (file) {
 	require(models_path+'/'+file)
 })
 
-var app = express()
+var app = express();
 
 // Load passport authentication strategies
 var passport = require('passport');

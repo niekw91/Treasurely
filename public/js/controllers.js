@@ -127,6 +127,7 @@ treasurelyControllers.controller('LogoutController', ['$scope', '$http', '$locat
 			console.log(response);
 			if (response.success) {
 				$cookieStore.remove('logged-in');
+				$location.path("/login");
 			}
 		});
 }]);

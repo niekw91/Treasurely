@@ -18,11 +18,17 @@ treasurely.config(['$routeProvider',
       }).
       when('/drop', {
         templateUrl: 'partials/drop.html',
-        controller: 'TreasureDropController'
+        controller: 'TreasureDropController',
+        resolve: {
+            factory: isAuthenticated
+        }
       }).
       when('/mytreasures', {
         templateUrl: 'partials/mytreasures.html',
-        controller: 'TreasureMyController'
+        controller: 'TreasureMyController',
+        resolve: {
+            factory: isAuthenticated
+        }
       }).
       when('/join', {
         templateUrl: 'partials/join.html',
@@ -40,3 +46,13 @@ treasurely.config(['$routeProvider',
         redirectTo: '/'
       });
   }]);
+
+var isAuthenticated = function ($q, $cookieStore, $location) {
+    var defer = $q.defer();
+    if ($cookieStore.get('logged-in')) {
+        defer.resolve();
+    } else {
+        $location.path('/login');
+    }
+    return defer.promise;
+};
