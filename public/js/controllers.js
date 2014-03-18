@@ -2,31 +2,31 @@
 
 var treasurelyControllers = angular.module('treasurelyControllers', ['treasurelyServices']);
 
-treasurelyControllers.controller('TreasureController', ['$scope', '$http', 
-  function($scope, $http) {
-  		// For UI bootstrap
-  		//$scope.isCollapsed = true;
-  		
-  		//$scope.treasures = function($scope, $http) {
-    		$http.get('http://localhost:8000/treasures/51.6877697/5.2863317?callback=JSON_CALLBACK&_=' + (new Date().getTime())).success(function(data) {
-        		$scope.treasures = data;
-        	});
-		//}
-		
+treasurelyControllers.controller('TreasureController', ['$scope', '$http', 'GeolocationService',
+  function($scope, $http, geolocation) {
+  		// On page loading, detect user location and send get command with latitude and longitude to server,
+  		// command will return treasures that are in current range
+	    geolocation().then(function (position) {			
+	    	var lat = position.coords.latitude;
+			var lng = position.coords.longitude;
+
+			var get = 'http://localhost:8000/treasures/' + lat + '/' + lng + '?callback=JSON_CALLBACK&_=' + (new Date().getTime());
+
+			$http.get(get).success(function(data) {
+    			$scope.treasures = data;
+    		});
+	    }, function (reason) {
+	        $scope.message = "Could not be determined."
+	    });
+
+	    // Send command to recollect all treasures
+		$scope.refresh = function() {
+			$http.get('http://localhost:8000/treasures/51.6877697/5.2863317?callback=JSON_CALLBACK&_=' + (new Date().getTime())).success(function(data) {
+    			$scope.treasures = data;
+    		});
+		}
+
 		/*
-    	var getTreasures = "http://localhost:8000/treasures/51.868809/5.737385";
-
-    	$scope.treasures = function() {
-    	 	var Treasure = $resource(getTreasures);
-	  		var treasure = Treasure.get({}, function() {
-		    	$scope.treasures = data;
-		  	});
-			$http.get(getTreasures).success(function(data) {
-				
-			});
-    	}
-
-		
 		$scope.open = function(treasure) {
 			//var id = $scope.treasures
 			var get = "/treasure/531c45cd0623c3e80001bd36/51.868809/5.737385";
