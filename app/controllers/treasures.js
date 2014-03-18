@@ -39,8 +39,8 @@ exports.postTreasure = function(req, res) {
 	treasure.save(function(err) {
   		if (err) throw err;
 	  	// Save new treasure to database
-	  	var socketIO = global.socketIO;
-		socketIO.sockets.emit('treasure:posted', treasure);
+	  	// var socketIO = global.socketIO;
+		// socketIO.sockets.emit('treasure:posted', treasure);
 		res.json(true);
 	});
 }
@@ -61,8 +61,8 @@ exports.postComment = function(req, res) {
 	Treasure.findOneAndUpdate(query, update, options, function(err, treasure) {
   		if (err) throw err;
   		// Update treasure and emit new comment
-		var socketIO = global.socketIO;
-		socketIO.sockets.emit('comment:posted', comment);
+		// var socketIO = global.socketIO;
+		// socketIO.sockets.emit('comment:posted', comment);
 		res.json(true);
 	});
 }
@@ -75,8 +75,8 @@ exports.deleteTreasure = function(req, res) {
 	Treasure.findOneAndRemove({"_id": treasureId}, function(err, treasure) {
   		if (err) throw err;
   		// Remove treasure and emit
-		var socketIO = global.socketIO;
-		socketIO.sockets.emit('treasure:deleted', treasure);
+		// var socketIO = global.socketIO;
+		// socketIO.sockets.emit('treasure:deleted', treasure);
 		res.json(true);
 	});
 }

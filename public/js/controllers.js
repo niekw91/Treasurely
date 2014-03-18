@@ -2,7 +2,7 @@
 
 var treasurelyControllers = angular.module('treasurelyControllers', ['treasurelyServices']);
 
-treasurelyControllers.controller('TreasureController', ['$scope', '$http',
+treasurelyControllers.controller('TreasureController', ['$scope', '$http', 
   function($scope, $http) {
   		// For UI bootstrap
   		//$scope.isCollapsed = true;
@@ -34,13 +34,13 @@ treasurelyControllers.controller('TreasureController', ['$scope', '$http',
 				$scope.treasure = data;
 			});
 		};
-
-		//Socket.on('treasure:posted', function (treasures) {
-			//$http.get('/teams').success(function(data) {
-			//	$scope.teams = data;
-			//});
+		
+		Socket.on('treasure:posted', function (treasure) {
+			$http.get('http://localhost:8000/treasures/51.6877697/5.2863317?callback=JSON_CALLBACK&_=' + (new Date().getTime())).success(function(data) {
+				$scope.treasures = data;
+			});
 			//$.pnotify({title: 'Vote', text: '+1 vote for ' + team.name });
-		//});
+		});
 		*/
 }]);
 
@@ -59,7 +59,7 @@ treasurelyControllers.controller('TreasureMyController', ['$scope', '$http', '$c
 treasurelyControllers.controller('TreasureDropController', ['$scope', '$http', 'GeolocationService',
 	function($scope, $http, geolocation) {
 	    $scope.drop = function(treasure) {
-    	    geolocation().then(function (position) {
+    	    geolocation().then(function (position) {			
     	    	treasure.latitude = position.coords.latitude;
 				treasure.longitude = position.coords.longitude;
 				treasure.user_id = "531b0a25b0cdec8815815a54";

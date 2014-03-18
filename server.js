@@ -46,7 +46,7 @@ app.get('/', function indexHTML(req, res, next) {
 var port = process.env.PORT || 8000
 var server = app.listen(port);
 console.log('Express listening at port ' + port);
-require('./config/socket-io')(app, server);
+// require('./config/socket-io')(app, server);
 
 // Expose app
 exports = module.exports = app

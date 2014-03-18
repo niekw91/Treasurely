@@ -20,7 +20,6 @@
     "underscore": "latest",
     "gzippo": "latest",
     "async": "latest",
-    "socket.io": "~0.9.14",
     "geolib": "latest",
     "passport": "latest",
     "passport-local": "latest"

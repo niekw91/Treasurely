@@ -13,8 +13,8 @@ exports.postUser = function(req, res) {
 	user.save(function(err) {
   		if (err) throw err;
 	  	// Save new user to database
-	  	var socketIO = global.socketIO;
-		socketIO.sockets.emit('user:posted', user);
+	 //  	var socketIO = global.socketIO;
+		// socketIO.sockets.emit('user:posted', user);
 		res.json(true);
 	});
 }
