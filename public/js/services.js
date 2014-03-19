@@ -1,25 +1,35 @@
 var treasurelyServices = angular.module('treasurelyServices', []);
 
-treasurelyServices.factory("GeolocationService", ['$q', '$window', '$rootScope', function ($q, $window, $rootScope) {
-    return function () {
-        var deferred = $q.defer();
+treasurelyServices.service("AuthenticationService", ['$rootScope', '$http', '$cookieStore', 
+    function ($rootScope, $http, $cookieStore) {
+        var isLoggedIn = false;
 
-        if (!$window.navigator) {
-            $rootScope.$apply(function() {
-                deferred.reject(new Error("Geolocation is not supported"));
-            });
-        } else {
-            $window.navigator.geolocation.getCurrentPosition(function (position) {
-                $rootScope.$apply(function() {
-                    deferred.resolve(position);
-                });
-            }, function (error) {
-                $rootScope.$apply(function() {
-                    deferred.reject(error);
-                });
+        this.login = function(user) {
+            $http.post('http://localhost:8000/login', user).success(function(response) {
+                console.log(response);
+                if (response.success) {
+                    $cookieStore.put('logged-in', response.token);
+                    console.log($cookieStore.get('logged-in'));
+                    // If success return true
+                    isLoggedIn = true;
+                } else {
+                    // If login incorrect return false
+                    isLoggedIn = false;
+                }
+                $rootScope.isLoggedIn = isLoggedIn;
+                return isLoggedIn;
             });
         }
 
-        return deferred.promise;
-    }
+        this.logout = function() {
+            $http.get('http://localhost:8000/logout?callback=JSON_CALLBACK&_=' + (new Date().getTime())).success(function(response) {
+                console.log(response);
+                if (response.success) {
+                    $cookieStore.remove('logged-in');
+                    isLoggedIn = false;
+                }
+                $rootScope.isLoggedIn = isLoggedIn;
+                return isLoggedIn;
+            });
+        }
 }]);
