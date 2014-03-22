@@ -2,8 +2,6 @@ var treasurelyServices = angular.module('treasurelyServices', []);
 
 treasurelyServices.service("AuthenticationService", ['$rootScope', '$http', '$cookieStore', '$location',
     function ($rootScope, $http, $cookieStore, $location) {
-        //var isLoggedIn = false;
-
         this.login = function(user, url, redirectTo) {
             $http.post(url, user).success(function(response) {
                 console.log(response);

@@ -94,9 +94,8 @@ treasurelyControllers.controller('JoinController', ['$scope', '$http',
 
 treasurelyControllers.controller('LoginController', ['$scope', '$location', '$rootScope', 'AuthenticationService',
 	function($scope, $location, $rootScope, authentication) {
+    	$scope.response = null;
 	    $scope.login = function(user) {
-	    	$scope.response = null;
-
 	    	var url = baseUrl + 'login';
 	    	var redirectTo = '/';
 	    	// Try to login, if success redirect to home
