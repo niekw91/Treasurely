@@ -1,35 +1,36 @@
 var treasurelyServices = angular.module('treasurelyServices', []);
 
-treasurelyServices.service("AuthenticationService", ['$rootScope', '$http', '$cookieStore', 
-    function ($rootScope, $http, $cookieStore) {
-        var isLoggedIn = false;
+treasurelyServices.service("AuthenticationService", ['$rootScope', '$http', '$cookieStore', '$location',
+    function ($rootScope, $http, $cookieStore, $location) {
+        //var isLoggedIn = false;
 
-        this.login = function(user) {
-            $http.post('http://localhost:8000/login', user).success(function(response) {
+        this.login = function(user, url, redirectTo) {
+            $http.post(url, user).success(function(response) {
                 console.log(response);
                 if (response.success) {
+                    // Set logged-in cookie with given token
                     $cookieStore.put('logged-in', response.token);
-                    console.log($cookieStore.get('logged-in'));
-                    // If success return true
-                    isLoggedIn = true;
+                    // Set rootScope response to null
+                    $rootScope.response = null;
+                    // Redirect to given url
+                    $location.path(redirectTo);
+
                 } else {
-                    // If login incorrect return false
-                    isLoggedIn = false;
+                    // Set rootScope response object
+                    $rootScope.response = response;
                 }
-                $rootScope.isLoggedIn = isLoggedIn;
-                return isLoggedIn;
             });
         }
 
-        this.logout = function() {
-            $http.get('http://localhost:8000/logout?callback=JSON_CALLBACK&_=' + (new Date().getTime())).success(function(response) {
+        this.logout = function(url, redirectTo) {
+            $http.get(url).success(function(response) {
                 console.log(response);
                 if (response.success) {
+                    // Remove logged-in cookie
                     $cookieStore.remove('logged-in');
-                    isLoggedIn = false;
+                    // After logout redirect to given url
+                    $location.path(redirectTo);
                 }
-                $rootScope.isLoggedIn = isLoggedIn;
-                return isLoggedIn;
             });
         }
 }]);

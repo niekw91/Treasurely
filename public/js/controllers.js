@@ -92,28 +92,36 @@ treasurelyControllers.controller('JoinController', ['$scope', '$http',
 	  	}
 }]);
 
-treasurelyControllers.controller('LoginController', ['$scope', '$location', 'AuthenticationService',
-	function($scope, $location, authentication) {
+treasurelyControllers.controller('LoginController', ['$scope', '$location', '$rootScope', 'AuthenticationService',
+	function($scope, $location, $rootScope, authentication) {
 	    $scope.login = function(user) {
+	    	$scope.response = null;
+
+	    	var url = baseUrl + 'login';
+	    	var redirectTo = '/';
 	    	// Try to login, if success redirect to home
-	    	if (authentication.login(user)) {
-	    		$location.path("/");
-	    	} else {
-	    		$scope.response = "Authentication failed";
-	    	}
+	    	authentication.login(user, url, redirectTo);
+
+	  		$rootScope.$watch('response', function () {
+	  			if ($rootScope.response) {
+		  			$scope.response = $rootScope.response;
+	  			} else {
+	  				$scope.response = null;
+	  			}
+  			});
 	    };
 }]);
 
 treasurelyControllers.controller('LogoutController', ['$scope', '$location', 'AuthenticationService',
 	function($scope, $location, authentication) {
+    	var url = baseUrl + 'logout?callback=JSON_CALLBACK&_=' + (new Date().getTime());
+    	var redirectTo = '/login';
 		// Try to log out, if succes redirect to login page
-		if (authentication.logout()) {
-			$location.path("/login");
-		}
+		authentication.logout(url, redirectTo);
 }]);
 
-treasurelyControllers.controller('MenuController', ['$scope', '$cookieStore', '$location', '$rootScope',
-	function($scope, $cookieStore, $location, $rootScope) {
+treasurelyControllers.controller('MenuController', ['$scope', '$cookieStore', '$location', 
+	function($scope, $cookieStore, $location) {
   		$scope.isCollapsed = true;
 
   		$scope.redirect = function() {
@@ -124,11 +132,9 @@ treasurelyControllers.controller('MenuController', ['$scope', '$cookieStore', '$
 	     	}
   		}
 
-  		// Watch the rootScope isLoggedIn variable
-
-  		// On page refresh isLoggedIn will be deleted and this method will always return Login
-  		$rootScope.$watch('isLoggedIn', function () {
-  			if ($rootScope.isLoggedIn) {
+  		// Watch the cookieStore logged-in object
+  		$scope.$watch(function() { return $cookieStore.get('logged-in'); }, function () {
+  			if ($cookieStore.get('logged-in')) {
 	  			$scope.buttonText = 'Logout';
   			} else {
   				$scope.buttonText = 'Login';
