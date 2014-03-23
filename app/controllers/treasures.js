@@ -5,7 +5,8 @@ var mongoose = require('mongoose')
 
 // GET: /treasures/:lat/:lng
 exports.getTreasures = function(req, res) {
-	Treasure.find({ active: true }, function(err, treasures) {
+	var now = new Date(Date.now());
+	Treasure.find({ expires: { $gt: now } }, function(err, treasures) {
 		var inRange = calcDistance(req.params.lat, req.params.lng, treasures);
     	res.json(inRange);
 	});
@@ -14,8 +15,8 @@ exports.getTreasures = function(req, res) {
 // GET: /treasure/:id/:lat/:lng
 exports.getTreasureById = function(req, res) {
 	var treasureId = req.params.id;
-
-	Treasure.find({ _id: treasureId, active: true  }, function (err, treasure) {
+	var now = new Date(Date.now());
+	Treasure.find({ _id: treasureId, expires: { $gt: now }  }, function (err, treasure) {
 		var inRange = calcDistance(req.params.lat, req.params.lng, treasure);
 		res.json(inRange);
 	});
@@ -83,16 +84,18 @@ exports.deleteTreasure = function(req, res) {
 	
 // Calculates the distance between given location and treasures
 var calcDistance = function(lat, lng, treasures) {
-	var inRange = [];
-    treasures.forEach(function(treasure) {
-    	// Calculate distance between given location and treasure
-    	var distance = geolib.getDistance({latitude: lat, longitude: lng }, {latitude: treasure.latitude, longitude: treasure.longitude});
-    	// If distance is smaller then 500 meters, add treasure to array
-		console.log(distance);
+	if (treasures) {
+		var inRange = [];
+	    treasures.forEach(function(treasure) {
+	    	// Calculate distance between given location and treasure
+	    	var distance = geolib.getDistance({latitude: lat, longitude: lng }, {latitude: treasure.latitude, longitude: treasure.longitude});
+	    	// If distance is smaller then 500 meters, add treasure to array
+			console.log(distance);
 
-    	if (distance < 500) {
-	    	inRange.push(treasure);
-	    }
-    });
-    return inRange;
+	    	if (distance < 500) {
+		    	inRange.push(treasure);
+		    }
+	    });
+	    return inRange;
+	}
 }	

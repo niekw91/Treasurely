@@ -13,7 +13,7 @@ var TreasureSchema = Schema({
   	latitude: {type: Number },
   	longitude: {type: Number },
   	title: {type: String },
-  	active: {type: Boolean, default: true },
+  	expires: {type: Date, default: new Date(Date.now() + 604800000) },
   	comments: [{type: ObjectId, ref: Comment}],
   	user_id: {type: ObjectId, ref: User}
 });
