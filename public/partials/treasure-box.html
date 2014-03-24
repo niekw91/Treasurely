@@ -1,0 +1,16 @@
+    <div class="row">
+        <div class="col-sm-6 content-main">
+            <div class="message-title"> {{ treasurebox.title }} </div>
+        </div>
+        <div class="col-sm-6 content-sub">
+            <div class="comments">
+                <ul>
+                    <li ng-repeat="comment in treasurebox.comments">{{ comment }}</li>
+                </ul>
+            </div>
+            <div class="action-bar">
+                <input class="input-search" type="search" ng-model="myq" placeholder="Comment" />
+                <button type='button' class="btn btn-primary action-refresh" ng-click="refresh()"><i class="fa fa-refresh"></i> Refresh</button>
+            </div>
+        </div>
+    </div>

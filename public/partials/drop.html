@@ -1,22 +1,17 @@
-
     <div class="row">
         <div class="col-sm-6 content-main">
-            <!-- <div class="content-main"> -->
-            <div class="message-title">            
-
-            </div>
-            <!-- </div> -->
-
+            <div class="message-title">Drop Treasure?</div>
         </div>
-            <div class="col-sm-6 content-sub">
-                <form novalidate class="simple-form">
-                    <input type="text" ng-model="treasure.title" placeholder="Title" /><br />
-                    <input type="area" ng-model="treasure.text" placeholder="Message" /><br />
-
-                    <button ng-click="drop(treasure)">Drop</button>
-                </form>
-            <div class="action-bar"></div>
+        <div class="col-sm-6 content-sub">
+<!--            <form novalidate class="simple-form">-->
+            <div class="treasure-title">
+                <input class="input" type="text" ng-model="treasure.title" placeholder="Title" />
+            </div>
+            <div class="treasure-text">
+                <textarea class="input droptext" ng-model="treasure.text" placeholder="Message"></textarea>
+            </div>
+            <div class="action-bar">
+                <button class="btn btn-primary action-btn" ng-click="drop(treasure)">Drop Treasure Here!</button>
+            </div>
         </div>
     </div>
-
-

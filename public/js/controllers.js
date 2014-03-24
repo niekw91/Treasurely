@@ -21,10 +21,39 @@ treasurelyControllers.controller('TreasureController', ['$scope', '$http', 'Geol
 		        $scope.message = "Could not be determined."
 		    });
 		}
+        var selected = 0;
+        $scope.getSelected = function() {
+            return selected;   
+        }
+        $scope.setSelected = function(selection) {
+            selected = selection;   
+        }
 
   		// On page loading, detect user location and send get command with latitude and longitude to server,
   		// command will return treasures that are in current range
 		$scope.refresh();
+}]);
+
+treasurelyControllers.controller('TreasureBoxController', ['$scope', '$http',
+   function($scope, $http) {
+       $scope.refresh = function() {
+		    geolocation().then(function (position) {			
+		    	var lat = position.coords.latitude;
+				var lng = position.coords.longitude;
+                var id = "532db79b01636f48084b1c1b";
+
+				var url = baseUrl + 'treasure/' + id + '/' + lat + '/' + lng + '?callback=JSON_CALLBACK&_=' + (new Date().getTime());
+
+				$http.get(url).success(function(data) {
+                    console.log(data);
+	    			$scope.treasurebox = data;
+	    		});
+		    }, function (reason) {
+		        $scope.message = "Could not be determined."
+		    });
+		}
+       
+       $scope.refresh();
 }]);
 
 treasurelyControllers.controller('TreasureMyController', ['$scope', '$http', '$cookieStore',
@@ -39,6 +68,16 @@ treasurelyControllers.controller('TreasureMyController', ['$scope', '$http', '$c
   	} else {
   		// No user logged in
   	}
+      
+        var selected = 0;
+        $scope.getSelected = function() {
+            console.log(selected);
+            return selected;   
+        }
+        $scope.setSelected = function(st) {
+            console.log("selected is " + st);
+            selected = st;   
+        }
 }]);
 
 treasurelyControllers.controller('TreasureDropController', ['$scope', '$cookieStore', '$http', 'GeolocationFactory',

@@ -1,21 +1,20 @@
-    
     <div class="row">
-        <div class="col-sm-6 content-main">
-            <!-- <div class="content-main"> -->
-            <div class="message-title">            
+        <div class="col-sm-6 content-main" ng-click="getTreasure(treasures[getSelected()]._id)">
+            <div class="message-title">
+                <a>{{ treasures[getSelected()].text }}</a>
+            </div>
+        </div>
+        <div class="col-sm-6 content-sub">
+            <div class="treasures">
                 <ul>
-                    <li ng-repeat="treasure in treasures">
-                        {{ treasure.title }} - {{ treasure.text }}
+                    <li ng-repeat="treasure in treasures | filter:q">
+                        <a ng-click="setSelected($index)">{{ treasure.title }}</a>
                     </li>
                 </ul>
             </div>
-            <!-- </div> -->
-
-        </div>
-        <div class="col-sm-6 content-sub">
-            <!-- <div class="content-sub"> -->
-
-            <!-- </div> -->
-            <div class="action-bar"></div>
+            <div class="action-bar">
+                <input class="input-search" type="search" ng-model="q" placeholder="Filter Treasures..." />
+                <button type='button' class="btn btn-primary action-refresh" ng-click="refresh()"><i class="fa fa-refresh"></i> Refresh</button>
+            </div>
         </div>
     </div>
