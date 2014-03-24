@@ -2,6 +2,7 @@ module.exports = function (app, passport) {
 	// Include controllers
     var treasures = require('../app/controllers/treasures');
     var users = require('../app/controllers/users');
+    var comments = require('../app/controllers/comments');
 
     // Treasure routes
     app.get('/treasures/:lat/:lng', treasures.getTreasures);
@@ -14,6 +15,9 @@ module.exports = function (app, passport) {
     // User routes
     app.get('/users', users.getUsers);
     app.post('/user', users.postUser);
+
+    // Comment routes
+    app.get('/comments/:id', comments.getComments);
 
     app.post('/login', function(req, res, next) {
         passport.authenticate('local-login', function(err, user, info) {

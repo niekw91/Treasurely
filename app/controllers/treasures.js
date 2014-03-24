@@ -57,7 +57,7 @@ exports.postComment = function(req, res) {
 	var treasureId = req.params.id;
 
 	var query = {"_id": treasureId};
-	var update = {comments: comment._id};
+	var update = { $push: { comments: comment._id } };
 	var options = {new: true};
 	Treasure.findOneAndUpdate(query, update, options, function(err, treasure) {
   		if (err) throw err;
