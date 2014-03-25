@@ -6,11 +6,20 @@
         </div>
         <div class="col-sm-6 content-sub">
             <div class="mytreasures">
-                <ul>
-                    <li ng-repeat="treasure in treasures | filter:q">
-                        <a ng-click="setSelected($index)">{{ treasure.title }}</a>
+                <ul class="treasure-items">
+                    <li ng-click="setSelected($index)" ng-repeat="treasure in treasures | filter:q" class="thumbnail">
+                        <h1>{{ treasure.title }}</h1>
+                        <p>{{ treasure.text }}</p>
+                        <!--<a>{{ treasure.title }}</a><br />-->
+                        <button class="btn btn-sm btn-primary" type='button' ng-click="open(treasure)">Show details</button>
                     </li>
                 </ul>
+                <!--<ul class="treasure-items">
+                    <li ng-click="setSelected($index)" ng-repeat="treasure in treasures | filter:q" class="thumbnail">
+                        <a>{{ treasure.title }}</a><br />
+                        <button class="btn btn-sm btn-primary" type='button'>Show details</button>
+                    </li>
+                </ul>-->
             </div>
             <div class="action-bar">
                 <input class="input-search" type="search" ng-model="q" placeholder="Filter Treasures..." />

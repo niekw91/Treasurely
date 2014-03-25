@@ -5,10 +5,14 @@
             </div>
         </div>
         <div class="col-sm-6 content-sub">
-            <div class="treasures">
-                <ul>
-                    <li ng-repeat="treasure in treasures | filter:q">
-                        <a ng-click="setSelected($index)">{{ treasure.title }}</a>
+            <div class="mytreasures">
+                <ul class="treasure-items">
+                    <li ng-click="setSelected($index)" ng-repeat="treasure in treasures | filter:q" class="thumbnail">
+                        <h1>{{ treasure.title }}</h1>
+                        <p>{{ treasure.text }}</p>
+                        <!--<a>{{ treasure.title }}</a><br />-->
+                        <button class="btn btn-sm btn-primary" type='button' ng-click="open(treasure)">Show details</button>
+                        <button class="btn btn-sm btn-danger" type='button' ng-click="delete(treasure)">Delete</button>
                     </li>
                 </ul>
             </div>

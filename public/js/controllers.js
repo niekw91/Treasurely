@@ -26,7 +26,7 @@ treasurelyControllers.controller('TreasureController', ['$scope', '$http', 'Geol
             return selected;   
         }
         $scope.setSelected = function(selection) {
-            selected = selection;   
+            selected = selection; 
         }
 
   		// On page loading, detect user location and send get command with latitude and longitude to server,
@@ -34,8 +34,8 @@ treasurelyControllers.controller('TreasureController', ['$scope', '$http', 'Geol
 		$scope.refresh();
 }]);
 
-treasurelyControllers.controller('TreasureBoxController', ['$scope', '$http',
-   function($scope, $http) {
+treasurelyControllers.controller('TreasureBoxController', ['$scope', '$http', 'GeolocationFactory',
+   function($scope, $http, geolocation) {
        $scope.refresh = function() {
 		    geolocation().then(function (position) {			
 		    	var lat = position.coords.latitude;
@@ -56,18 +56,29 @@ treasurelyControllers.controller('TreasureBoxController', ['$scope', '$http',
        $scope.refresh();
 }]);
 
-treasurelyControllers.controller('TreasureMyController', ['$scope', '$http', '$cookieStore',
-  function($scope, $http, $cookieStore) {
-  	var userId = $cookieStore.get('logged-in');
-  	if (userId) {
-  		var url = baseUrl + 'treasures/' + userId + '?callback=JSON_CALLBACK&_=' + (new Date().getTime());
+treasurelyControllers.controller('TreasureMyController', ['$scope', '$http', '$cookieStore', '$location',
+  function($scope, $http, $cookieStore, $location) {
+	  	var userId = $cookieStore.get('logged-in');
+	  	if (userId) {
+	  		var url = baseUrl + 'treasures/' + userId + '?callback=JSON_CALLBACK&_=' + (new Date().getTime());
 
-		$http.get(url).success(function(data) {
-			$scope.treasures = data;
-		});
-  	} else {
-  		// No user logged in
-  	}
+			$http.get(url).success(function(data) {
+				$scope.treasures = data;
+			});
+	  	} else {
+	  		// No user logged in
+	  	}
+
+	  	$scope.open = function(treasure) {
+	  		$location.path('/treasure/' + treasure._id);
+	  	}
+
+	  	$scope.delete = function(treasure) {
+	  		var delUrl = baseUrl + 'treasure/' + treasure._id;
+			$http.delete(delUrl).success(function() {
+				// Treasure deleted
+			});
+	  	}
       
         var selected = 0;
         $scope.getSelected = function() {

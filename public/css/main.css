@@ -76,12 +76,46 @@ html, body {
     height: 84%;
 }
 
+.treasure-items {
+  	list-style: none;
+  	padding-left: 0px;
+}
+
+.treasure-items li {
+  	clear: both;
+  	height: 100px;
+  	padding-top: 15px;
+  	cursor: pointer;
+  	background: #F5F5F5;
+
+  	font-size: 13px;
+}
+
+.treasure-items li h1 {
+	font-size: 16px;
+	padding: 0;
+	margin: 0;
+	font-family: Verdana;
+	font-weight: bold;
+	color: #006699;
+}
+
+.treasure-items li:nth-child(odd) 
+{ 
+	background: #E8E8E8; 
+}
+
+.treasure-items li button {
+  	margin-top: 3px;
+}
+
 .mytreasures {
+	overflow: auto;
     height: 84%;
 }
 
 .action-bar {
-    background-color: #bbb;
+    /*background-color: #bbb;*/
     height: 16%;
     width: 100%;
     margin: 0;
