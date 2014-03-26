@@ -1,16 +1,20 @@
     <div class="row">
         <div class="col-sm-6 content-main">
-            <div class="message-title"> {{ treasurebox.title }} </div>
+            <div class="message-title"> {{ treasure.title }} </div>
         </div>
         <div class="col-sm-6 content-sub">
             <div class="comments">
-                <ul>
-                    <li ng-repeat="comment in treasurebox.comments">{{ comment }}</li>
+                <ul class="comment-items">
+                    <li ng-repeat="comment in comments" class="thumbnail">
+                        <h1>{{ comment.text }}</h1>
+                        <p>{{ comment.date }}</p>
+                    </li>
                 </ul>
             </div>
             <div class="action-bar">
-                <input class="input-search" type="search" ng-model="myq" placeholder="Comment" />
-                <button type='button' class="btn btn-primary action-refresh" ng-click="refresh()"><i class="fa fa-refresh"></i> Refresh</button>
+                <input class="input-search" type="search" ng-model="newComment.text" placeholder="Comment" />
+                <button type='button' class="btn btn-primary" ng-click="send(newComment)">Send</button>
+                <button type='button' class="btn btn-primary" ng-click="getComments()"><i class="fa fa-refresh"></i></button>
             </div>
         </div>
     </div>

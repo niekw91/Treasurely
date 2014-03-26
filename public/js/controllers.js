@@ -4,8 +4,8 @@ var treasurelyControllers = angular.module('treasurelyControllers', ['treasurely
 
 var baseUrl = 'http://localhost:8000/';
 
-treasurelyControllers.controller('TreasureController', ['$scope', '$http', 'GeolocationFactory',
-  function($scope, $http, geolocation) {
+treasurelyControllers.controller('TreasureController', ['$scope', '$http', 'GeolocationFactory', '$location',
+  function($scope, $http, geolocation, $location) {
 	    // Send command to recollect all treasures
 		$scope.refresh = function() {
 		    geolocation().then(function (position) {			
@@ -21,6 +21,11 @@ treasurelyControllers.controller('TreasureController', ['$scope', '$http', 'Geol
 		        $scope.message = "Could not be determined."
 		    });
 		}
+
+	  	$scope.open = function(treasure) {
+	  		$location.path('/treasure/' + treasure._id);
+	  	}
+
         var selected = 0;
         $scope.getSelected = function() {
             return selected;   
@@ -34,26 +39,53 @@ treasurelyControllers.controller('TreasureController', ['$scope', '$http', 'Geol
 		$scope.refresh();
 }]);
 
-treasurelyControllers.controller('TreasureBoxController', ['$scope', '$http', 'GeolocationFactory',
-   function($scope, $http, geolocation) {
-       $scope.refresh = function() {
-		    geolocation().then(function (position) {			
+treasurelyControllers.controller('TreasureBoxController', ['$scope', '$http', '$routeParams', '$cookieStore', 'GeolocationFactory',
+   function($scope, $http, $routeParams, $cookieStore, geolocation) {
+	    geolocation().then(function (position) {			
 		    	var lat = position.coords.latitude;
 				var lng = position.coords.longitude;
-                var id = "532db79b01636f48084b1c1b";
+                var treasureId = $routeParams.treasureId;
 
-				var url = baseUrl + 'treasure/' + id + '/' + lat + '/' + lng + '?callback=JSON_CALLBACK&_=' + (new Date().getTime());
+				var url = baseUrl + 'treasure/' + treasureId + '/' + lat + '/' + lng + '?callback=JSON_CALLBACK&_=' + (new Date().getTime());
 
 				$http.get(url).success(function(data) {
-                    console.log(data);
-	    			$scope.treasurebox = data;
+	    			$scope.treasure = data[0];
+				    if ($scope.treasure) {
+				    	$scope.getComments = function() {
+				   			var url = baseUrl + 'comments/' + $scope.treasure._id;
+
+							$http.get(url).success(function(data) {
+				    			$scope.comments = data;
+				    		});
+			   			}
+
+			   			$scope.send = function(newComment) {
+						  	var userId = $cookieStore.get('logged-in');
+					  		if (userId) {
+					   			var url = baseUrl + 'treasure/' + $scope.treasure._id;
+
+					   			newComment.user_id = userId;
+
+								$http.put(url, newComment).success(function(data) {
+					    			$scope.getComments();
+									// Clear textfield;
+									$scope.newComment.text = '';
+					    		});
+							} else {
+								// no user logged in
+								alert('You must be logged in to place comments!');
+							}
+			   			}
+				   		// When page loading, get comments
+				   		$scope.getComments();
+			    	} else {
+						// Treasure out of range
+						alert('Treasure out of range!');
+					}	
 	    		});
-		    }, function (reason) {
-		        $scope.message = "Could not be determined."
-		    });
-		}
-       
-       $scope.refresh();
+	    }, function (reason) {
+	        $scope.message = "Could not be determined."
+		});
 }]);
 
 treasurelyControllers.controller('TreasureMyController', ['$scope', '$http', '$cookieStore', '$location',

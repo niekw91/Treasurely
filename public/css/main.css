@@ -76,9 +76,46 @@ html, body {
     height: 84%;
 }
 
+/* Comments */
+.comments {
+	overflow: auto;
+    height: 84%;
+}
+
+.comment-items {
+  	list-style: none;
+  	padding: 6px;
+}
+
+.comment-items li {
+  	clear: both;
+  	min-height: 10%;
+  	height: auto;
+  	padding-top: 15px;
+  	cursor: pointer;
+  	background: #FFF;
+  	font-size: 13px;
+  	word-wrap: break-word;
+}
+
+.comment-items li h1 {
+	font-size: 16px;
+	padding: 0;
+	margin: 0;
+	font-family: Verdana;
+	font-weight: bold;
+	color: #006699;
+}
+
+.comment-items li:nth-child(odd) 
+{ 
+	background: #FFF; 
+}
+
+/* Treasure items */
 .treasure-items {
   	list-style: none;
-  	padding-left: 0px;
+  	padding: 6px;
 }
 
 .treasure-items li {
