@@ -22,7 +22,6 @@ module.exports = function (app, config, passport) {
   app.set('view engine', 'jade')
 
   app.configure(function () {
-
     // cookieParser should be above session
     app.use(express.cookieParser())
 
@@ -48,8 +47,9 @@ module.exports = function (app, config, passport) {
     app.use(passport.session()); // persistent login sessions
 
     var allowCrossDomain = function(req, res, next) {
-        res.header("Access-Control-Allow-Origin", "*");
-        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type,      Accept");
+        res.header('Access-Control-Allow-Origin', "*");
+        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+        res.header('Access-Control-Allow-Headers', 'Content-Type');
         next();
     };
     app.use(allowCrossDomain);
@@ -58,6 +58,11 @@ module.exports = function (app, config, passport) {
     app.use(app.router);
 
     app.use(function(err, req, res, next){
+      if (req.url === '/favicon.ico') {
+          res.writeHead(200, {'Content-Type': 'image/x-icon'} );
+          return res.end();
+      }
+
       // treat as 404
       if (~err.message.indexOf('not found')) return next()
 

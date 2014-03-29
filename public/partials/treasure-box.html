@@ -1,9 +1,12 @@
     <div class="row">
         <div class="col-sm-6 content-main">
             <div class="message-title"> {{ treasure.title }} </div>
+            <button type='button' class="btn btn-primary" ng-click="showImage()">Show Image</button>
+            <img ng-src="{{ image }}">
         </div>
         <div class="col-sm-6 content-sub">
             <div class="comments">
+                <h2>Comments</h2>
                 <ul class="comment-items">
                     <li ng-repeat="comment in comments" class="thumbnail">
                         <h1>{{ comment.text }}</h1>
@@ -12,9 +15,9 @@
                 </ul>
             </div>
             <div class="action-bar">
-                <input class="input-search" type="search" ng-model="newComment.text" placeholder="Comment" />
-                <button type='button' class="btn btn-primary" ng-click="send(newComment)">Send</button>
+                <input class="input-search" type="search" ng-model="newComment.text" placeholder="Comment"></input>
                 <button type='button' class="btn btn-primary" ng-click="getComments()"><i class="fa fa-refresh"></i></button>
+                <button type='button' class="btn btn-primary" ng-click="send(newComment)">Send</button>
             </div>
         </div>
     </div>

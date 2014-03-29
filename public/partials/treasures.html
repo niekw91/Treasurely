@@ -1,25 +1,19 @@
     <div class="row">
-        <div class="col-sm-6 content-main" style="background-image: url(../images/test-background.gif);">
+        <div class="col-sm-6 content-main">
+            <!-- style="background-image: url(../images/test-background.gif);" -->
             <div class="message-title">
-                <a ng-click="getTreasure(treasures[getSelected()]._id)">{{ treasures[getSelected()].text }}</a>
+                <a ng-click="getTreasure(treasures[selected]._id)">{{ treasures[selected].text }}</a>
             </div>
         </div>
         <div class="col-sm-6 content-sub">
             <div class="mytreasures">
                 <ul class="treasure-items">
-                    <li ng-click="setSelected($index)" ng-repeat="treasure in treasures | filter:q" class="thumbnail">
+                    <li ng-repeat="treasure in treasures | filter:q" ng-click="setSelected($index)" class="thumbnail" ng-class="{'treasure-items-selected': $index==selected}">
                         <h1>{{ treasure.title }}</h1>
                         <p>{{ treasure.text }}</p>
-                        <!--<a>{{ treasure.title }}</a><br />-->
                         <button class="btn btn-sm btn-primary" type='button' ng-click="open(treasure)">Show details</button>
                     </li>
                 </ul>
-                <!--<ul class="treasure-items">
-                    <li ng-click="setSelected($index)" ng-repeat="treasure in treasures | filter:q" class="thumbnail">
-                        <a>{{ treasure.title }}</a><br />
-                        <button class="btn btn-sm btn-primary" type='button'>Show details</button>
-                    </li>
-                </ul>-->
             </div>
             <div class="action-bar">
                 <input class="input-search" type="search" ng-model="q" placeholder="Filter Treasures..." />

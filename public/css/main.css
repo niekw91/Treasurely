@@ -22,6 +22,10 @@ html, body {
 	padding-top: 40%;
 }
 
+.signup {
+	font-size: 14px;
+}
+
 .input {
     width: 100%;
     height: 100%;
@@ -33,13 +37,14 @@ html, body {
 }
 
 .input-search {
-    width: 78%;
+    width: 68%;
     height: 100%;
     margin: 0px;
     padding: 0px;
     padding-left: 0.8em;
     border-style: none;
-    background-color: #fff;    
+    background-color: #fff; 
+    overflow: hidden;   
 }
 
 .action-refresh {
@@ -69,7 +74,32 @@ html, body {
     border-top-color: #ccc;
 }
 .treasure-text {
-    height: 68%; 
+    height: 54%; 
+}
+
+.treasure-image {
+	height: 14%;
+}
+
+.treasure-image input[type="file"] {
+	float: left;
+	height: 100%;
+	
+}
+/* Drop treasure page - drag n drop */
+.drop-box {
+	float: right;
+	background: transparent;
+	border: 3px dashed #DDD;
+	width: 200px;
+	height: 100%; 
+	text-align: center;
+	padding: 5px; 
+	font-size: 11px;
+}
+
+.drop-box.dragover {
+	border: 5px dashed blue;
 }
 
 .treasures {
@@ -80,6 +110,14 @@ html, body {
 .comments {
 	overflow: auto;
     height: 84%;
+}
+
+.comments h2 {
+	margin-left: 10px;
+	font-size: 18px;
+
+	font-style: oblique;
+	color: #006699;
 }
 
 .comment-items {
@@ -128,6 +166,18 @@ html, body {
   	font-size: 13px;
 }
 
+.treasure-items-selected {
+  display: block;
+  padding: 4px;
+  margin-bottom: 20px;
+  line-height: 1.42857143;
+  background-color: #fff;
+  border: 2px solid #C8C8C8;
+  border-radius: 4px;
+  -webkit-transition: all .2s ease-in-out;
+          transition: all .2s ease-in-out;
+}
+
 .treasure-items li h1 {
 	font-size: 16px;
 	padding: 0;
@@ -151,8 +201,8 @@ html, body {
     height: 84%;
 }
 
-.action-bar {
-    /*background-color: #bbb;*/
+.action-bar-login {
+    background-color: #fff;
     height: 16%;
     width: 100%;
     margin: 0;
@@ -160,6 +210,43 @@ html, body {
     border-style: solid;
     border-width: thin;
     border-color: #bbb;
+}
+
+.action-bar-login button {
+	width: 100%;
+	height: 100%;
+}
+
+.action-bar-drop {
+    background-color: #fff;
+    height: 16%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-style: solid;
+    border-width: thin;
+    border-color: #bbb;
+}
+
+.action-bar-drop button {
+	width: 100%;
+}
+
+.action-bar {
+    background-color: #fff;
+    height: 16%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border-style: solid;
+    border-width: thin;
+    border-color: #bbb;
+}
+
+.action-bar button {
+	float: right;
+
+	height: 100%;
 }
 
 .action-btn {
@@ -171,12 +258,16 @@ html, body {
 		margin: 80px 0px 0px 0px;
 		background-color: purple;
 		height: 80%;
+
+		border-radius: 15px;
 	}
 
 	.content-sub {
 		margin: 80px 0px 0px 0px;
 		height: 80%;
 		font-size: 1.5em;
+
+		border-radius: 15px;
 	}
 
 	span.hidable {

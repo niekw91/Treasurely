@@ -1,13 +1,13 @@
     <div class="row">
         <div class="col-sm-6 content-main" ng-click="getTreasure(treasures[getSelected()]._id)">
             <div class="message-title">
-                <a>{{ treasures[getSelected()].text }}</a>
+                <a>{{ treasures[selected].text }}</a>
             </div>
         </div>
         <div class="col-sm-6 content-sub">
             <div class="mytreasures">
                 <ul class="treasure-items">
-                    <li ng-click="setSelected($index)" ng-repeat="treasure in treasures | filter:q" class="thumbnail">
+                    <li ng-repeat="treasure in treasures | filter:q" ng-click="setSelected($index)" class="thumbnail" ng-class="{'treasure-items-selected': $index==selected}">
                         <h1>{{ treasure.title }}</h1>
                         <p>{{ treasure.text }}</p>
                         <!--<a>{{ treasure.title }}</a><br />-->

@@ -11,6 +11,4 @@ exports.getComments = function(req, res) {
 			res.json(comments);
 		});
 	});
-
-
 }

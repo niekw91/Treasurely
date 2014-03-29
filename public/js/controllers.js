@@ -2,7 +2,7 @@
 
 var treasurelyControllers = angular.module('treasurelyControllers', ['treasurelyServices', 'treasurelyFactories']);
 
-var baseUrl = 'http://localhost:8000/';
+var baseUrl = 'http://localhost:7000/';
 
 treasurelyControllers.controller('TreasureController', ['$scope', '$http', 'GeolocationFactory', '$location',
   function($scope, $http, geolocation, $location) {
@@ -26,12 +26,9 @@ treasurelyControllers.controller('TreasureController', ['$scope', '$http', 'Geol
 	  		$location.path('/treasure/' + treasure._id);
 	  	}
 
-        var selected = 0;
-        $scope.getSelected = function() {
-            return selected;   
-        }
+        $scope.selected = 0;
         $scope.setSelected = function(selection) {
-            selected = selection; 
+            $scope.selected = selection; 
         }
 
   		// On page loading, detect user location and send get command with latitude and longitude to server,
@@ -39,8 +36,8 @@ treasurelyControllers.controller('TreasureController', ['$scope', '$http', 'Geol
 		$scope.refresh();
 }]);
 
-treasurelyControllers.controller('TreasureBoxController', ['$scope', '$http', '$routeParams', '$cookieStore', 'GeolocationFactory',
-   function($scope, $http, $routeParams, $cookieStore, geolocation) {
+treasurelyControllers.controller('TreasureBoxController', ['$scope', '$http', '$routeParams', '$cookieStore', 'GeolocationFactory', '$resource',
+   function($scope, $http, $routeParams, $cookieStore, geolocation, $resource) {
 	    geolocation().then(function (position) {			
 		    	var lat = position.coords.latitude;
 				var lng = position.coords.longitude;
@@ -51,6 +48,18 @@ treasurelyControllers.controller('TreasureBoxController', ['$scope', '$http', '$
 				$http.get(url).success(function(data) {
 	    			$scope.treasure = data[0];
 				    if ($scope.treasure) {
+				    	// $scope.showImage = function() {
+				    	// 	var imageUrl = baseUrl + 'treasure/image/' + $scope.treasure._id
+
+				    	// 	var Image = $resource(imageUrl);
+
+						   //  $scope.image = Image.get();
+				    	// 	// $http.get(imageUrl).success(function(data) {
+				    	// 	// 	$scope.image = data;
+				    	// 	// 	//$scope.image = new Image(data);
+				    	// 	// });
+				    	// }
+
 				    	$scope.getComments = function() {
 				   			var url = baseUrl + 'comments/' + $scope.treasure._id;
 
@@ -78,6 +87,7 @@ treasurelyControllers.controller('TreasureBoxController', ['$scope', '$http', '$
 			   			}
 				   		// When page loading, get comments
 				   		$scope.getComments();
+				
 			    	} else {
 						// Treasure out of range
 						alert('Treasure out of range!');
@@ -90,16 +100,18 @@ treasurelyControllers.controller('TreasureBoxController', ['$scope', '$http', '$
 
 treasurelyControllers.controller('TreasureMyController', ['$scope', '$http', '$cookieStore', '$location',
   function($scope, $http, $cookieStore, $location) {
-	  	var userId = $cookieStore.get('logged-in');
-	  	if (userId) {
-	  		var url = baseUrl + 'treasures/' + userId + '?callback=JSON_CALLBACK&_=' + (new Date().getTime());
+  		$scope.refresh = function() {
+		  	var userId = $cookieStore.get('logged-in');
+		  	if (userId) {
+		  		var url = baseUrl + 'treasures/' + userId + '?callback=JSON_CALLBACK&_=' + (new Date().getTime());
 
-			$http.get(url).success(function(data) {
-				$scope.treasures = data;
-			});
-	  	} else {
-	  		// No user logged in
-	  	}
+				$http.get(url).success(function(data) {
+					$scope.treasures = data;
+				});
+		  	} else {
+		  		// No user logged in
+		  	}
+  		}
 
 	  	$scope.open = function(treasure) {
 	  		$location.path('/treasure/' + treasure._id);
@@ -108,25 +120,38 @@ treasurelyControllers.controller('TreasureMyController', ['$scope', '$http', '$c
 	  	$scope.delete = function(treasure) {
 	  		var delUrl = baseUrl + 'treasure/' + treasure._id;
 			$http.delete(delUrl).success(function() {
-				// Treasure deleted
+				$scope.refresh();
 			});
 	  	}
       
-        var selected = 0;
-        $scope.getSelected = function() {
-            console.log(selected);
-            return selected;   
+        $scope.selected = 0;
+        $scope.setSelected = function(selection) {
+            $scope.selected = selection; 
         }
-        $scope.setSelected = function(st) {
-            console.log("selected is " + st);
-            selected = st;   
-        }
+
+  		// On page loading
+		$scope.refresh();
 }]);
 
-treasurelyControllers.controller('TreasureDropController', ['$scope', '$cookieStore', '$http', 'GeolocationFactory',
-	function($scope, $cookieStore, $http, geolocation) {
+treasurelyControllers.controller('TreasureDropController', ['$scope', '$cookieStore', '$http', 'GeolocationFactory', '$location', '$upload',
+	function($scope, $cookieStore, $http, geolocation, $location, $upload) {
 	  	var userId = $cookieStore.get('logged-in');
   		if (userId) {
+  			var file = null;
+			$scope.onFileSelect = function($files) {
+            //$files: an array of files selected, each file has name, size, and type.
+	            for (var i = 0; i < $files.length; i++) {
+	                file = $files[i];
+	                  //.error(...)
+	                  //.then(success, error, progress); 
+	                  //.xhr(function(xhr){xhr.upload.addEventListener(...)})// access and attach any event listener to XMLHttpRequest.
+	            }
+            /* alternative way of uploading, send the file binary with the file's content-type.
+               Could be used to upload files to CouchDB, imgur, etc... html5 FileReader is needed. 
+               It could also be used to monitor the progress of a normal http post/put request with large data*/
+            // $scope.upload = $upload.http({...})  see 88#issuecomment-31366487 for sample code.
+    		};
+
 		    $scope.drop = function(treasure) {
 	    	    geolocation().then(function (position) {			
 	    	    	treasure.latitude = position.coords.latitude;
@@ -135,9 +160,27 @@ treasurelyControllers.controller('TreasureDropController', ['$scope', '$cookieSt
 
 					var url = baseUrl + 'treasure';
 
-	    			$http.post(url, treasure).success(function() {
-	        			// Post success (redirect??)
-	        		});
+	    			$http.post(url, treasure).success(function(treasureId) {
+	    				console.log(treasureId);
+    				  	$scope.upload = $upload.upload({
+		                    url: baseUrl + 'upload', //upload.php script, node.js route, or servlet url
+		                    // method: POST or PUT,
+		                    // headers: {'header-key': 'header-value'},
+		                    // withCredentials: true,
+		                    data: { id: treasureId },
+		                    file: file, // or list of files: $files for html5 only
+		                    /* set the file formData name ('Content-Desposition'). Default is 'file' */
+		                    //fileFormDataName: myFile, //or a list of names for multiple files (html5).
+		                    /* customize how data is added to formData. See #40#issuecomment-28612000 for sample code */
+		                    //formDataAppender: function(formData, key, val){}
+		                }).progress(function(evt) {
+		                    console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+		                }).success(function(data, status, headers, config) {
+		                    // file is uploaded successfully
+		                    console.log(data);
+    	        			$location.path('/');
+		                });
+	                });
 			    }, function (reason) {
 			        $scope.message = "Could not be determined."
 			    });
@@ -221,4 +264,15 @@ treasurelyControllers.controller('MenuController', ['$scope', '$cookieStore', '$
   				$scope.buttonText = 'Login';
   			}
   		});
+
+        // // handles the callback from the received event
+        // var handleCallback = function(event) {
+        //     $scope.$apply(function() {
+        //     	console.log(event.data);
+        //         $scope.dropcount = event.data;
+        //     });
+        // }
+ 
+        // var source = new EventSource(baseUrl + 'stream/dropcount');
+        // source.addEventListener('date', handleCallback, false);
 }]);

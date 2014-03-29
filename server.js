@@ -9,6 +9,7 @@ var express = require('express')
 var env = process.env.NODE_ENV || 'development'
 	, config = require('./config/config')[env]
 	, mongoose = require('mongoose')
+	, sse = require('./config/sse')
 
 // Bootstrap db connection
 mongoose.connect(config.db);
@@ -29,7 +30,7 @@ require('./config/passport')(passport, mongoose);
 require('./config/express')(app, config, passport)
 
 // Bootstrap routes
-require('./config/routes')(app, passport)
+require('./config/routes')(app, passport, sse, fs)
 
 // Get index.html
 app.get('/', function indexHTML(req, res, next) {
@@ -43,7 +44,7 @@ app.get('/', function indexHTML(req, res, next) {
 });
 
 // Start the app by listening on <port>
-var port = process.env.PORT || 8000
+var port = process.env.PORT || 7000
 var server = app.listen(port);
 console.log('Express listening at port ' + port);
 // require('./config/socket-io')(app, server);

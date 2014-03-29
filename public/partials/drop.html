@@ -10,7 +10,13 @@
             <div class="treasure-text">
                 <textarea class="input droptext" ng-model="treasure.text" placeholder="Message"></textarea>
             </div>
-            <div class="action-bar">
+            <div class="treasure-image">
+                <input class="btn btn-primary" type="file" ng-file-select="onFileSelect($files)" >
+                <div ng-file-drop="onFileSelect($files)" class="drop-box"
+                        ng-show="dropSupported">drop files here</div>
+                <div ng-file-drop-available="dropSupported=true" ng-show="!dropSupported">HTML5 Drop File is not supported!</div>
+            </div>
+            <div class="action-bar-drop">
                 <button class="btn btn-primary action-btn" ng-click="drop(treasure)">Drop Treasure Here!</button>
             </div>
         </div>

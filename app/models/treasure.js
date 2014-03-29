@@ -7,7 +7,7 @@ var Comment = require('./comment')
 var User = require('./user')
 
 var TreasureSchema = Schema({
-	  media: {type: String },
+	  media: {type: String, default: null },
 	  text: {type: String },
   	date: {type: Date, default: Date.now},
   	latitude: {type: Number },

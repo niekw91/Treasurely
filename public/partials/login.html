@@ -14,15 +14,13 @@
 		<div class="form-group">
 			<input type="password" class="form-control input" ng-model="user.password" placeholder="Password">
 		</div>
-
-		
 	</form>
-
+        <div class="action-bar-login">
+            <button class="btn btn-primary btn-lg" ng-click="login(user)">Login</button>
+        </div>
 	<hr>
 
-	<p>Don't have an account? <a href="#/join">Signup</a></p>
-            <div class="action-bar">
-                <button class="btn btn-primary btn-lg" ng-click="login(user)">Login</button>
-            </div>
+	<p class="signup">Don't have an account? <a href="#/join">Signup</a></p>
+
         </div>
     </div>
