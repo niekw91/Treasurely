@@ -48,17 +48,17 @@ treasurelyControllers.controller('TreasureBoxController', ['$scope', '$http', '$
 				$http.get(url).success(function(data) {
 	    			$scope.treasure = data[0];
 				    if ($scope.treasure) {
-				    	// $scope.showImage = function() {
-				    	// 	var imageUrl = baseUrl + 'treasure/image/' + $scope.treasure._id
+				    	$scope.showImage = function() {
+				    		var imageUrl = baseUrl + 'treasure/image/' + $scope.treasure._id
 
-				    	// 	var Image = $resource(imageUrl);
+				    		var Image = $resource(imageUrl);
 
-						   //  $scope.image = Image.get();
-				    	// 	// $http.get(imageUrl).success(function(data) {
-				    	// 	// 	$scope.image = data;
-				    	// 	// 	//$scope.image = new Image(data);
-				    	// 	// });
-				    	// }
+						    $scope.image = Image.get();
+				    		$http.get(imageUrl).success(function(data) {
+				    			$scope.image = data;
+				    			$scope.image = new Image(data);
+				    		});
+				    	}
 
 				    	$scope.getComments = function() {
 				   			var url = baseUrl + 'comments/' + $scope.treasure._id;
@@ -161,14 +161,14 @@ treasurelyControllers.controller('TreasureDropController', ['$scope', '$cookieSt
 					var url = baseUrl + 'treasure';
 
 	    			$http.post(url, treasure).success(function(treasureId) {
-	    				console.log(treasureId);
+	    				console.log(baseUrl + 'upload');
     				  	$scope.upload = $upload.upload({
 		                    url: baseUrl + 'upload', //upload.php script, node.js route, or servlet url
 		                    // method: POST or PUT,
 		                    // headers: {'header-key': 'header-value'},
 		                    // withCredentials: true,
 		                    data: { id: treasureId },
-		                    file: file, // or list of files: $files for html5 only
+		                    file: file // or list of files: $files for html5 only
 		                    /* set the file formData name ('Content-Desposition'). Default is 'file' */
 		                    //fileFormDataName: myFile, //or a list of names for multiple files (html5).
 		                    /* customize how data is added to formData. See #40#issuecomment-28612000 for sample code */
@@ -177,7 +177,6 @@ treasurelyControllers.controller('TreasureDropController', ['$scope', '$cookieSt
 		                    console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
 		                }).success(function(data, status, headers, config) {
 		                    // file is uploaded successfully
-		                    console.log(data);
     	        			$location.path('/');
 		                });
 	                });

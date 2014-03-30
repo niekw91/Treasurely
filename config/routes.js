@@ -31,11 +31,12 @@ module.exports = function (app, passport, sse, fs) {
                     var treasureId = req.body.id;
                     fs.readFile(file.path, function (err, data) {
                         if (err) throw err;
-                        var newPath = __dirname + "/../img/" + new Date().getTime() + '-' + file.name;
+                        var newURL = "/img/" + new Date().getTime() + '-' + file.name;
+                        var newPath = __dirname + "/../public" + newURL;
                         fs.writeFile(newPath, data, function (err) {
                             if (err) throw err;
 
-                            treasures.updateTreasureImagePath(treasureId, newPath, function() {
+                            treasures.updateTreasureImagePath(treasureId, newURL, function() {
                                 res.send(true);
                             })
                         });

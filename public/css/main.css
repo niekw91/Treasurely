@@ -15,11 +15,17 @@ html, body {
 }
 
 .message-title {
-	margin: 0 auto;
+	/*margin: 0 auto;*/
 	text-align: center;
 	color: white;
 	font-size: 2em;
-	padding-top: 40%;
+	/*padding-top: 40%;*/
+	position: relative;
+	left: 50%;
+	top: 50%;
+	margin:-100px 0 0 -150px;
+	height: 200px;
+	width: 300px;
 }
 
 .signup {
@@ -74,7 +80,7 @@ html, body {
     border-top-color: #ccc;
 }
 .treasure-text {
-    height: 54%; 
+    height: 68%; 
 }
 
 .treasure-image {
@@ -88,11 +94,14 @@ html, body {
 }
 /* Drop treasure page - drag n drop */
 .drop-box {
-	float: right;
+	/*float: center;*/
 	background: transparent;
 	border: 3px dashed #DDD;
-	width: 200px;
-	height: 100%; 
+	width: 300px;
+	height: 30%; 
+	left: 50%;
+	position: relative;
+	margin-left: -150px;
 	text-align: center;
 	padding: 5px; 
 	font-size: 11px;
@@ -245,12 +254,15 @@ html, body {
 
 .action-bar button {
 	float: right;
-
 	height: 100%;
 }
 
 .action-btn {
     height: 100%;
+}
+.action-bar input {
+	float: left;
+	height: 100%;
 }
 
 @media screen and (min-width: 770px) {
@@ -286,7 +298,7 @@ html, body {
 		font-size: 1.5em;
 	}	
 	.col-sm-6 {
-		height: 50%;
+		height: 56.8%;
 	}
 	.navbar-inner{
 	    background:transparent !important;

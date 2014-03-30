@@ -1,22 +1,23 @@
     <div class="row">
         <div class="col-sm-6 content-main">
-            <div class="message-title">Drop Treasure?</div>
+            <div class="message-title">
+                Drop Treasure?<br>
+                <div ng-file-drop="onFileSelect($files)" class="drop-box"
+                        ng-show="dropSupported">drop files here</div>
+                <div ng-file-drop-available="dropSupported=true" ng-show="!dropSupported">HTML5 Drop File is not supported!</div>
+            </div>
         </div>
         <div class="col-sm-6 content-sub">
-<!--            <form novalidate class="simple-form">-->
             <div class="treasure-title">
                 <input class="input" type="text" ng-model="treasure.title" placeholder="Title" />
             </div>
             <div class="treasure-text">
                 <textarea class="input droptext" ng-model="treasure.text" placeholder="Message"></textarea>
             </div>
-            <div class="treasure-image">
-                <input class="btn btn-primary" type="file" ng-file-select="onFileSelect($files)" >
-                <div ng-file-drop="onFileSelect($files)" class="drop-box"
-                        ng-show="dropSupported">drop files here</div>
-                <div ng-file-drop-available="dropSupported=true" ng-show="!dropSupported">HTML5 Drop File is not supported!</div>
-            </div>
-            <div class="action-bar-drop">
+            <div class="action-bar">
+                <!-- <div class="treasure-image"> -->
+                <input class="btn btn-primary action-fc" type="file" ng-file-select="onFileSelect($files)" >
+                <!-- </div> -->
                 <button class="btn btn-primary action-btn" ng-click="drop(treasure)">Drop Treasure Here!</button>
             </div>
         </div>

@@ -77,8 +77,8 @@ exports.getTreasureImage = function(req, res) {
 
 	Treasure.find({ _id: treasureId }, function (err, treasure) {
 		path = require('path');
-
-		var p = path.resolve(__dirname + '../../../img/1396092674437-Desert.jpg');
+		console.log(res.json(true));
+		var p = path.resolve(__dirname + '/../img/1396188667408-calisthenics_advanced_full_body_demolition_workout.jpg');
 		res.sendfile(p);
 	});
 }
