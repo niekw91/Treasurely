@@ -1,5 +1,5 @@
     <div class="row">
-        <div class="col-sm-6 content-main" ng-click="getTreasure(treasures[getSelected()]._id)">
+        <div class="col-sm-6 content-main" ng-click="getTreasure(treasures[getSelected()]._id)" style="background: url({{treasures[selected].media}}) no-repeat center center fixed;-webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
             <div class="message-title">
                 <a>{{ treasures[selected].text }}</a>
             </div>
