@@ -8,6 +8,7 @@ module.exports = function (app, passport, sse, fs) {
     app.get('/treasures/:lat/:lng', treasures.getTreasures);
     app.get('/treasure/:id/:lat/:lng', treasures.getTreasureById);
     app.get('/treasures/:id', treasures.getTreasuresByUser);
+    app.get('/treasure/image/:id', treasures.getTreasureImage);
     app.post('/treasure', treasures.postTreasure);
     app.put('/treasure/:id', treasures.postComment);
     app.delete('/treasure/:id', treasures.deleteTreasure);
@@ -15,9 +16,6 @@ module.exports = function (app, passport, sse, fs) {
     // User routes
     app.get('/users', users.getUsers);
     app.post('/user', users.postUser);
-
-    // File get route
-    app.get('/treasure/image/:id', treasures.getTreasureImage);
 
     // File upload route
     app.post('/upload', function (req, res) {
@@ -48,9 +46,9 @@ module.exports = function (app, passport, sse, fs) {
     });
 
     // Server sent events
-    app.get('/stream/dropcount', function(req, res) {
+    app.get('/stream/activecount', function(req, res) {
   
-        var event = 'date';
+        var event = 'count';
   
         sse.writeSSEHead(req, res, function(req, res) {
             sse.writeSSEData(req, res, event, 0, function(req, res) {

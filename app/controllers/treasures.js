@@ -103,7 +103,8 @@ var calcDistance = function(lat, lng, treasures) {
 
 // Return the total number of treasures in database
 exports.getTreasureCount = function(callback) {
-    Treasure.count({}, function (err, count) {
+	var now = new Date(Date.now());
+    Treasure.count({ expires: { $gt: now } }, function (err, count) {
     	if (err) throw err;
     	callback(count);
     });
@@ -111,12 +112,10 @@ exports.getTreasureCount = function(callback) {
 
 // Update the treasure image path
 exports.updateTreasureImagePath = function(treasureId, path, callback) {
-	//var id = mongoose.Types.ObjectId(treasureId);
+	// Remove double quotes from string
 	var length =0;
 	for(var i in treasureId) length++;
 	var res = treasureId.slice(1,length-1);
-	//console.log(id);
-	console.log(res);
 
 	var query = {"_id": res};
 	var update = { media: path };

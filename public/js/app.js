@@ -3,8 +3,7 @@ var treasurely = angular.module('treasurely', [
   'treasurelyControllers',
   'ui.bootstrap',
   'ngCookies',
-  'angularFileUpload',
-  'ngResource'
+  'angularFileUpload'
 ]);
 
 treasurely.config(['$routeProvider',

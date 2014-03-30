@@ -36,8 +36,8 @@ treasurelyControllers.controller('TreasureController', ['$scope', '$http', 'Geol
 		$scope.refresh();
 }]);
 
-treasurelyControllers.controller('TreasureBoxController', ['$scope', '$http', '$routeParams', '$cookieStore', 'GeolocationFactory', '$resource',
-   function($scope, $http, $routeParams, $cookieStore, geolocation, $resource) {
+treasurelyControllers.controller('TreasureBoxController', ['$scope', '$http', '$routeParams', '$cookieStore', 'GeolocationFactory', 
+   function($scope, $http, $routeParams, $cookieStore, geolocation) {
 	    geolocation().then(function (position) {			
 		    	var lat = position.coords.latitude;
 				var lng = position.coords.longitude;
@@ -61,7 +61,7 @@ treasurelyControllers.controller('TreasureBoxController', ['$scope', '$http', '$
 				    	}
 
 				    	$scope.getComments = function() {
-				   			var url = baseUrl + 'comments/' + $scope.treasure._id;
+				   			var url = baseUrl + 'comments/' + $scope.treasure._id + '?callback=JSON_CALLBACK&_=' + (new Date().getTime());
 
 							$http.get(url).success(function(data) {
 				    			$scope.comments = data;
@@ -139,17 +139,9 @@ treasurelyControllers.controller('TreasureDropController', ['$scope', '$cookieSt
   		if (userId) {
   			var file = null;
 			$scope.onFileSelect = function($files) {
-            //$files: an array of files selected, each file has name, size, and type.
 	            for (var i = 0; i < $files.length; i++) {
 	                file = $files[i];
-	                  //.error(...)
-	                  //.then(success, error, progress); 
-	                  //.xhr(function(xhr){xhr.upload.addEventListener(...)})// access and attach any event listener to XMLHttpRequest.
 	            }
-            /* alternative way of uploading, send the file binary with the file's content-type.
-               Could be used to upload files to CouchDB, imgur, etc... html5 FileReader is needed. 
-               It could also be used to monitor the progress of a normal http post/put request with large data*/
-            // $scope.upload = $upload.http({...})  see 88#issuecomment-31366487 for sample code.
     		};
 
 		    $scope.drop = function(treasure) {
@@ -163,16 +155,9 @@ treasurelyControllers.controller('TreasureDropController', ['$scope', '$cookieSt
 	    			$http.post(url, treasure).success(function(treasureId) {
 	    				console.log(baseUrl + 'upload');
     				  	$scope.upload = $upload.upload({
-		                    url: baseUrl + 'upload', //upload.php script, node.js route, or servlet url
-		                    // method: POST or PUT,
-		                    // headers: {'header-key': 'header-value'},
-		                    // withCredentials: true,
+		                    url: baseUrl + 'upload',
 		                    data: { id: treasureId },
-		                    file: file // or list of files: $files for html5 only
-		                    /* set the file formData name ('Content-Desposition'). Default is 'file' */
-		                    //fileFormDataName: myFile, //or a list of names for multiple files (html5).
-		                    /* customize how data is added to formData. See #40#issuecomment-28612000 for sample code */
-		                    //formDataAppender: function(formData, key, val){}
+		                    file: file
 		                }).progress(function(evt) {
 		                    console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
 		                }).success(function(data, status, headers, config) {
@@ -264,14 +249,13 @@ treasurelyControllers.controller('MenuController', ['$scope', '$cookieStore', '$
   			}
   		});
 
-        // // handles the callback from the received event
-        // var handleCallback = function(event) {
-        //     $scope.$apply(function() {
-        //     	console.log(event.data);
-        //         $scope.dropcount = event.data;
-        //     });
-        // }
+        // handles the callback from the received event
+        var handleCallback = function(event) {
+            $scope.$apply(function() {
+                $scope.dropcount = event.data;
+            });
+        }
  
-        // var source = new EventSource(baseUrl + 'stream/dropcount');
-        // source.addEventListener('date', handleCallback, false);
+        var source = new EventSource(baseUrl + 'stream/activecount');
+        source.addEventListener('count', handleCallback, false);
 }]);
