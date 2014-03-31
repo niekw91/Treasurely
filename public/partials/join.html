@@ -1,18 +1,16 @@
-
-	<div class="col-sm-6 col-sm-offset-3">
-
-	  	<div style="height: 305px">
-	    	<carousel interval="myInterval">
-      			<slide ng-repeat="slide in slides" active="slide.active">
-		        	<img ng-src="{{slide.image}}" style="margin:auto;">
-		        	<div class="carousel-caption">
-		          		<h4>Slide {{$index}}</h4>
-		          		<p>{{slide.text}}</p>
-		        	</div>
-	      		</slide>
-	    	</carousel>
-	  	</div>
-
+<div class="row">
+	<div class="col-sm-6 content-main" style="background-color:#fff;">
+    	<carousel interval="myInterval" style="top:20%;">
+  			<slide ng-repeat="slide in slides" active="slide.active">
+	        	<img ng-src="{{slide.image}}" >
+	        	<div class="carousel-caption">
+	          		<h4>Slide {{$index}}</h4>
+	          		<p>{{slide.text}}</p>
+	        	</div>
+      		</slide>
+    	</carousel>
+	</div>
+	<div class="col-sm-6 content-sub">
 		<h1><span class="fa fa-sign-in"></span>Signup</h1>
 
 		<div ng-if="response.message.length > 0">
@@ -29,9 +27,7 @@
 
 			<button class="btn btn-warning btn-lg" ng-click="join(newUser)">Join</button>
 		</form>
-
 		<hr>
-
 		<p>Already have an account? <a href="#/login">Login</a></p>
-
+	</div>
 </div>
