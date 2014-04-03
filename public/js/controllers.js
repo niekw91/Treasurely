@@ -191,7 +191,7 @@ treasurelyControllers.controller('JoinController', ['$scope', '$http',
 	  	$scope.addSlide = function() {
 	    	var newWidth = 600 + slides.length;
 	    	slides.push({
-		      	image: 'http://whdn.williamhill.com/cms/images/vegas/uploads/600x300_PharaohsWinner.jpg',
+		      	image: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTysXyho07701XYKHOmQIM2vMlEBTR1MjXUtinZ-Eiahb5Y2iU5',
 		      	text: 'Treasurely'
 		    });
 

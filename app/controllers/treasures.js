@@ -37,7 +37,7 @@ exports.postTreasure = function(req, res) {
 
 	treasure.save(function(err) {
   		if (err) throw err;
-		res.json(treasure._id);
+		res.json({ id: treasure._id });
 	});
 }
 
@@ -113,11 +113,11 @@ exports.getTreasureCount = function(callback) {
 // Update the treasure image path
 exports.updateTreasureImagePath = function(treasureId, path, callback) {
 	// Remove double quotes from string
-	var length =0;
-	for(var i in treasureId) length++;
-	var res = treasureId.slice(1,length-1);
+	// var length =0;
+	// for(var i in treasureId) length++;
+	// var res = treasureId.slice(1,length-1);
 
-	var query = {"_id": res};
+	var query = {"_id": treasureId};
 	var update = { media: path };
 	var options = {new: true};
 	Treasure.findOneAndUpdate(query, update, options, function(err, treasure) {

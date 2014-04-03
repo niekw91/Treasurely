@@ -3,6 +3,7 @@ module.exports = function (app, passport, sse, fs) {
     var treasures = require('../app/controllers/treasures');
     var users = require('../app/controllers/users');
     var comments = require('../app/controllers/comments');
+    var images = require('../app/controllers/images');
 
     // Treasure routes
     app.get('/treasures/:lat/:lng', treasures.getTreasures);
@@ -12,6 +13,9 @@ module.exports = function (app, passport, sse, fs) {
     app.post('/treasure', treasures.postTreasure);
     app.put('/treasure/:id', treasures.postComment);
     app.delete('/treasure/:id', treasures.deleteTreasure);
+
+    // Images routes
+    app.get('/public/img/:filename', images.getImage);
 
     // User routes
     app.get('/users', users.getUsers);
